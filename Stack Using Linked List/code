@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Define the stack
+typedef struct Stack {
+    struct Node* top;
+} Stack;
+
+// Initialize the stack
+void initializeStack(Stack* s) {
+    s->top = NULL;
+}
+
+// Check if the stack is empty
+int isEmpty(Stack* s) {
+    return s->top == NULL;
+}
+
+// Push an element onto the stack
+void push(Stack* s, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (!newNode) {
+        printf("Memory allocation failed.\n");
+        return;
+    }
+    newNode->data = value;
+    newNode->next = s->top;
+    s->top = newNode;
+    printf("Pushed: %d\n", value);
+}
+
+// Pop an element from the stack
+int pop(Stack* s) {
+    if (isEmpty(s)) {
+        printf("Stack underflow.\n");
+        return -1;
+    }
+    struct Node* temp = s->top;
+    int value = temp->data;
+    s->top = s->top->next;
+    free(temp);
+    printf("Popped: %d\n", value);
+    return value;
+}
+
+// Peek the top element
+int peek(Stack* s) {
+    if (isEmpty(s)) {
+        printf("Stack is empty.\n");
+        return -1;
+    }
+    return s->top->data;
+}
+
+// Display the stack
+void display(Stack* s) {
+    if (isEmpty(s)) {
+        printf("Stack is empty.\n");
+        return;
+    }
+    struct Node* temp = s->top;
+    printf("Stack: ");
+    while (temp) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+// Driver code
+int main() {
+    Stack s;
+    initializeStack(&s);
+
+    push(&s, 10);
+    push(&s, 20);
+    push(&s, 30);
+
+    display(&s);
+
+    printf("Top element: %d\n", peek(&s));
+
+    pop(&s);
+    display(&s);
+
+    return 0;
+}
