@@ -1,0 +1,84 @@
+#include <stdio.h>
+#define MAX 100
+
+typedef struct Stack {
+    int arr[MAX];
+    int top;
+} Stack;
+
+// Initialize the stack
+void initializeStack(Stack* s) {
+    s->top = -1;
+}
+
+// Check if the stack is empty
+int isEmpty(Stack* s) {
+    return s->top == -1;
+}
+
+// Check if the stack is full
+int isFull(Stack* s) {
+    return s->top == MAX - 1;
+}
+
+// Push an element onto the stack
+void push(Stack* s, int value) {
+    if (isFull(s)) {
+        printf("Stack overflow.\n");
+        return;
+    }
+    s->arr[++(s->top)] = value;
+    printf("Pushed: %d\n", value);
+}
+
+// Pop an element from the stack
+int pop(Stack* s) {
+    if (isEmpty(s)) {
+        printf("Stack underflow.\n");
+        return -1;
+    }
+    int value = s->arr[(s->top)--];
+    printf("Popped: %d\n", value);
+    return value;
+}
+
+// Peek the top element
+int peek(Stack* s) {
+    if (isEmpty(s)) {
+        printf("Stack is empty.\n");
+        return -1;
+    }
+    return s->arr[s->top];
+}
+
+// Display the stack
+void display(Stack* s) {
+    if (isEmpty(s)) {
+        printf("Stack is empty.\n");
+        return;
+    }
+    printf("Stack: ");
+    for (int i = s->top; i >= 0; i--) {
+        printf("%d ", s->arr[i]);
+    }
+    printf("\n");
+}
+
+// Driver code
+int main() {
+    Stack s;
+    initializeStack(&s);
+
+    push(&s, 10);
+    push(&s, 20);
+    push(&s, 30);
+
+    display(&s);
+
+    printf("Top element: %d\n", peek(&s));
+
+    pop(&s);
+    display(&s);
+
+    return 0;
+}
