@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Define the queue
+typedef struct Queue {
+    struct Node *front, *rear;
+} Queue;
+
+// Initialize the queue
+void initializeQueue(Queue* q) {
+    q->front = q->rear = NULL;
+}
+
+// Check if the queue is empty
+int isEmpty(Queue* q) {
+    return q->front == NULL;
+}
+
+// Enqueue an element
+void enqueue(Queue* q, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (!newNode) {
+        printf("Memory allocation failed.\n");
+        return;
+    }
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (isEmpty(q)) {
+        q->front = q->rear = newNode;
+    } else {
+        q->rear->next = newNode;
+        q->rear = newNode;
+    }
+    printf("Enqueued: %d\n", value);
+}
+
+// Dequeue an element
+int dequeue(Queue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty.\n");
+        return -1;
+    }
+    int value = q->front->data;
+    struct Node* temp = q->front;
+    q->front = q->front->next;
+
+    if (q->front == NULL) { // If the queue becomes empty
+        q->rear = NULL;
+    }
+
+    free(temp);
+    printf("Dequeued: %d\n", value);
+    return value;
+}
+
+// Display the queue
+void display(Queue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    struct Node* temp = q->front;
+    printf("Queue: ");
+    while (temp) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+// Driver code
+int main() {
+    Queue q;
+    initializeQueue(&q);
+
+    enqueue(&q, 10);
+    enqueue(&q, 20);
+    enqueue(&q, 30);
+
+    display(&q);
+
+    dequeue(&q);
+    display(&q);
+
+    return 0;
+}
